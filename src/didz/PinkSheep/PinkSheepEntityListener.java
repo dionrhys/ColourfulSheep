@@ -2,10 +2,7 @@ package didz.PinkSheep;
 
 import java.util.logging.Logger;
 
-//import org.bukkit.DyeColor;
-//import org.bukkit.World;
 import org.bukkit.entity.CreatureType;
-//import org.bukkit.entity.Entity;
 import org.bukkit.entity.Sheep;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityListener;
@@ -18,9 +15,7 @@ public class PinkSheepEntityListener extends EntityListener {
 	
 	public PinkSheepEntityListener(PinkSheep pinkSheep) {
 		plugin = pinkSheep;
-		log = Logger.getLogger("Minecraft");
-		log.info("PinkSheepEntityListener constructor called");
-
+		log = plugin.log;
 		scheduler = plugin.getServer().getScheduler();
 	}
 
