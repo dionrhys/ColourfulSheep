@@ -1,20 +1,23 @@
-package didz.PinkSheep;
+package didz.ColourfulSheep;
 
+import java.util.Random;
 import java.util.logging.Logger;
 
+import org.bukkit.DyeColor;
 import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Sheep;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityListener;
 import org.bukkit.scheduler.BukkitScheduler;
 
-public class PinkSheepEntityListener extends EntityListener {
-	private PinkSheep plugin;
+public class ColourfulSheepEntityListener extends EntityListener {
+	private ColourfulSheep plugin;
 	private Logger log;
 	private BukkitScheduler scheduler;
+	static private Random rand = new Random();
 	
-	public PinkSheepEntityListener(PinkSheep pinkSheep) {
-		plugin = pinkSheep;
+	public ColourfulSheepEntityListener(ColourfulSheep colourfulSheep) {
+		plugin = colourfulSheep;
 		log = plugin.log;
 		scheduler = plugin.getServer().getScheduler();
 	}
@@ -24,7 +27,19 @@ public class PinkSheepEntityListener extends EntityListener {
 		if ( event.getCreatureType() == CreatureType.SHEEP && event.getEntity() instanceof Sheep )
 		{
 			//log.info("Sheep spawned!");
-			PinkSheepRunnable task = new PinkSheepRunnable( (Sheep)event.getEntity() );
+			
+			int randomChance = rand.nextInt(plugin.totalChance);
+			int currentChance = 0;
+			DyeColor theColor = DyeColor.WHITE;
+			for (DyeColor color : plugin.colorChances.keySet()) {
+				currentChance += plugin.colorChances.get(color);
+				if (randomChance < currentChance) {
+					theColor = color;
+					break;
+				}
+			}
+			
+			ColourfulSheepRunnable task = new ColourfulSheepRunnable( (Sheep)event.getEntity(), theColor );
 			int taskID = scheduler.scheduleSyncDelayedTask(plugin, task, 1);
 			if (taskID == -1) {
 				log.warning("Failed to create task to colour Sheep");
