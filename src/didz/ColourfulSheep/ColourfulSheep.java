@@ -33,7 +33,7 @@ public class ColourfulSheep extends JavaPlugin {
 	}
 	
 	public void onDisable() {
-		config.save();
+		saveConfig();
 		log.info("ColourfulSheep plugin disabled.");
 	}
 	
@@ -57,7 +57,6 @@ public class ColourfulSheep extends JavaPlugin {
             try {
                 configFile.createNewFile();
                 config = new Configuration(configFile);
-                config.setHeader("# Configuration file for ColourfulSheep");
                 // Default all colours to equal chance
                 for (DyeColor color : DyeColor.values()) {
                 	String propName = "colourchance." + color.toString().toLowerCase();
@@ -66,11 +65,16 @@ public class ColourfulSheep extends JavaPlugin {
                 	}
                 }
 
-                config.save();
+                saveConfig();
             } catch (IOException e) {
                 log.warning(e.toString());
             }
         }
+    }
+    
+    private void saveConfig() {
+        config.setHeader("# Configuration file for ColourfulSheep");
+        config.save();
     }
     
     public int totalChance = 0;
@@ -85,6 +89,6 @@ public class ColourfulSheep extends JavaPlugin {
             	totalChance += chance;
         	}
         }
-        log.info("totalChance = " + totalChance);
+        //log.info("totalChance = " + totalChance);
     }
 }
